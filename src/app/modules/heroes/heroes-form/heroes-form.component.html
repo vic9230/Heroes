@@ -1,0 +1,93 @@
+<ng-template #loading>
+  <app-fake-loading></app-fake-loading>
+</ng-template>
+<div *ngIf="heroFormFG; else loading" class="flex-col">
+
+  <form *ngIf="heroe || !isEdit"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxFlex="100"
+        class="w-full"
+        name="form"
+        [formGroup]="heroFormFG">
+
+    <div fxLayout="row" fxLayout.lt-sm="column"
+         fxLayoutAlign="start start" fxLayoutGap="20px"
+         class="mb-2">
+
+      <input type="file" class="file-input" hidden="true"
+             (change)="onFileSelected($event)" #fileUpload>
+      <div fxFlex='20' fxFlex.lt-md="100" class="file-upload">
+        <div class="border rounded-md p-2 bg-white flex items-center gap-2
+                            cursor-pointer"
+             (click)="fileUpload.click()">
+
+          <button mat-mini-fab color="accent" class="upload-btn">
+            <mat-icon>photo</mat-icon>
+          </button>
+
+          <!-- CREAR -->
+          <ng-container *ngIf="!isEdit;else contenEdit" class="overflow-hidden text-ellipsis">
+            <img *ngIf="file_image?.url" [src]="file_image.url || ''" width="100" height="100" alt="Imagen"
+                 class="image-preview"/>
+          </ng-container>
+
+          <!-- EDITAR -->
+          <ng-template #contenEdit>
+
+            <ng-container *ngIf="file_image?.name;else imageHeroe">
+              <img [src]="file_image.url"
+                   alt="Imagen"
+                   width="100" height="100">
+            </ng-container>
+
+            <ng-template #imageHeroe>
+              <img [src]="heroe.image_url"
+                   alt="Imagen"
+                   width="100" height="100">
+            </ng-template>
+
+          </ng-template>
+        </div>
+
+      </div>
+      <mat-form-field class="w-full" fxFlex="30">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" placeholder="Nombre" formControlName="name"
+               [value]="heroFormFG.get('name')?.value | uppercase">
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="mt-2">
+      <mat-form-field class="w-full" fxFlex="60">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput cdkTextareaAutosize='true' type="text" placeholder="Descripción"
+                  formControlName="description"></textarea>
+      </mat-form-field>
+
+
+    </div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="mt-2">
+      <!-- Gender -->
+      <mat-form-field class="w-full" fxFlex="33">
+        <mat-label>Genero</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option value="M">Masculino</mat-option>
+          <mat-option value="F">Femenino</mat-option>
+          <mat-option value="O">Otro</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+  </form>
+
+  <div fxLayout="row" class="mt-32" fxLayoutAlign="end center" fxLayoutGap="20px">
+    <button id="save_button" type="submit" mat-raised-button color="accent"
+            [disabled]="isLoading || heroFormFG.invalid" (click)="submit()">
+      <mat-icon *ngIf="!isLoading">save</mat-icon>
+      <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+      {{ isLoading ? '' : submitBtnText }}
+    </button>
+  </div>
+
+</div>

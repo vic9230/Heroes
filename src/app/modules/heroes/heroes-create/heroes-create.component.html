@@ -1,0 +1,19 @@
+<div class="p-10">
+
+  <!-- HEADER -->
+  <div fxLayout="row" fxLayoutAlign="space-between top">
+    <div fxFlex="100">
+      <h3><a [routerLink]="['/heroes']">Héroes</a> > Crear Héroe</h3>
+    </div>
+    <div fxLayoutGap="10px">
+      <go-back-button></go-back-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="pt-5">
+    <app-heroes-form></app-heroes-form>
+  </div>
+
+</div>

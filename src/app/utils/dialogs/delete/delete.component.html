@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content fxLayout="column">
+    <p class="mb-2">{{data.text}}</p>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <mat-form-field fxFlex="100">
+            <input matInput [placeholder]="placeholder" type="text" #confirm required>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions class="text-right" fxLayoutAlign="end center">
+    <button mat-button [mat-dialog-close]="false">Cancelar</button>
+    <button mat-button (click)="checkConfirm(confirm.value)" mat-raised-button color="warn"
+            [disabled]="!data.password && confirm.value !== 'confirmar'">{{data.button}}
+    </button>
+</div>

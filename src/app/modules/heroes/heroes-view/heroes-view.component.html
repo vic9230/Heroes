@@ -1,0 +1,92 @@
+<div class="w-full p-10">
+
+  <ng-container *ngIf="(heroe$ | async) as heroe; else loading">
+    <!-- HEADER -->
+    <div fxLayout="row" fxLayoutAlign="space-between top">
+      <div fxFlex="100">
+        <h3><a [routerLink]="['/heroes']">Héroes</a> > Ver Héroe</h3>
+        <h1> {{ heroe?.name | uppercase }} </h1>
+
+      </div>
+      <div fxLayoutGap="10px">
+        <go-back-button></go-back-button>
+      </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content pt-10">
+
+      <!-- Formulario -->
+      <div class="content">
+        <div *ngIf="heroe">
+          <form fxLayout="column" fxLayoutAlign="start" fxFlex="100" class="w-full">
+            <!-- Campos de archivo -->
+            <div fxLayout="row" fxLayout.lt-sm="column"
+                 fxLayoutAlign="start start" class="mb-6">
+              <div fxFlex='20'>
+                <div class="border rounded-md p-2 bg-white flex w-fit">
+                  <img [ngSrc]="heroe.image_url" alt="Imagen" width="200" height="200"
+                       *ngIf="heroe.image_url"/>
+                </div>
+              </div>
+              <div fxFlex='80' *ngIf="heroe.description">
+                <div class="border rounded-md p-2  flex w-fit">
+                  <p>{{ heroe.description }}</p>
+                </div>
+              </div>
+            </div>
+
+
+            <mat-divider></mat-divider>
+
+            <table mat-table class="mt-6" [dataSource]="displayedAttributes">
+
+              <!-- Campo Column -->
+              <ng-container matColumnDef="campo">
+                <th mat-header-cell *matHeaderCellDef> Atributo</th>
+                <td mat-cell *matCellDef="let attribute" class="field-name">
+                  {{ attributeTranslations[attribute] }}
+                </td>
+              </ng-container>
+
+              <!-- Valor Column -->
+              <ng-container matColumnDef="valor">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let attribute" class="field">
+                  <ng-container *ngIf="['gender'].includes(attribute)">
+                    {{ heroe.gender ? completeGenderDict[heroe.gender] : 'Desconocido' }}
+                  </ng-container>
+                </td>
+
+              </ng-container>
+
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botones -->
+    <div fxLayout="row" class="mt-32" fxLayoutAlign="end center" fxLayoutGap="20px">
+      <button mat-raised-button color="warn"
+              (click)="deleteHeroe(heroe)">
+        <mat-icon aria-label="Eliminar">delete</mat-icon>
+        Eliminar
+      </button>
+
+      <button mat-raised-button color="accent"
+              [routerLink]="'/heroes/' + heroe.id +'/edit'">
+        <mat-icon aria-label="Editar">edit</mat-icon>
+        Editar
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-fake-loading></app-fake-loading>
+  </ng-template>
+</div>

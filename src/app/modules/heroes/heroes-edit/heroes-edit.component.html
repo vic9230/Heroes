@@ -1,0 +1,31 @@
+<div class="p-10" *ngIf="(heroe$ | async) as heroe; else loading">
+
+  <!-- HEADER -->
+  <div fxLayout="row" fxLayoutAlign="space-between top">
+    <div fxFlex="100">
+      <h3><a [routerLink]="['/heroes']">Héroes</a> > Editar Héroe</h3>
+      <div class="flex gap-2 items-center">
+        <img class="rounded-full mb-4" width="30px" height="30px" [src]="heroe.image_url">
+        <h1>{{ heroe?.name | uppercase }}</h1>
+      </div>
+
+    </div>
+    <div fxLayoutGap="10px">
+      <go-back-button></go-back-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content pt-16">
+    <div *ngIf="heroe">
+      <app-heroes-form [heroe]="heroe"></app-heroes-form>
+    </div>
+  </div>
+  <!-- / CONTENT -->
+
+</div>
+
+<ng-template #loading>
+  <app-fake-loading></app-fake-loading>
+</ng-template>
